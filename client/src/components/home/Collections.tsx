@@ -15,7 +15,7 @@ export default function Collections() {
 
   const getCategoryImage = (item: any, idx: number) => {
     if (item.imageUrl) return item.imageUrl;
-    
+
     // Nice fallback photos for collections
     const fallbacks = [
       'https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=600&auto=format&fit=crop',
@@ -23,21 +23,21 @@ export default function Collections() {
       'https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=600&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=600&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600&auto=format&fit=crop',
     ];
-    
+
     const nameMap: Record<string, string> = {
-      'men': fallbacks[2],
-      'women': fallbacks[1],
-      'accessories': fallbacks[3],
-      'shoes': fallbacks[4],
-      'sneakers': fallbacks[4],
-      'apparel': fallbacks[0],
+      men: fallbacks[2],
+      women: fallbacks[1],
+      accessories: fallbacks[3],
+      shoes: fallbacks[4],
+      sneakers: fallbacks[4],
+      apparel: fallbacks[0],
     };
-    
+
     const key = item.name?.toLowerCase();
     if (key && nameMap[key]) return nameMap[key];
-    
+
     return fallbacks[idx % fallbacks.length];
   };
 

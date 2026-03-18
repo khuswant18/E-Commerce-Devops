@@ -12,11 +12,11 @@ export default function Navbar() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { isAuthenticated, user, logout } = useAuth();
-  const [isSearchOpen] = useState(false); 
+  const [isSearchOpen] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
-  const userMenuRef = useRef<HTMLDivElement | null>(null); 
+  const userMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (isAuthenticated) {

@@ -36,6 +36,7 @@ jobs:
     name: Deploy to EC2
     runs-on: ubuntu-latest
     needs: build
+    if: github.repository == 'khuswant18/E-Commerce-Devops'
 
     steps:
       - name: Deploy via SSH

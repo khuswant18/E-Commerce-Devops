@@ -4,7 +4,7 @@ function generateTrackingSteps(status, createdAt) {
     { status: 'Processing', date: createdAt.toLocaleDateString(), completed: false },
     { status: 'Shipped', date: '', completed: false },
     { status: 'Out for Delivery', date: '', completed: false },
-    { status: 'Delivered', date: '', completed: false }
+    { status: 'Delivered', date: '', completed: false },
   ];
 
   const statusIndex = {
@@ -12,7 +12,7 @@ function generateTrackingSteps(status, createdAt) {
     PROCESSING: 1,
     SHIPPED: 2,
     DELIVERED: 4,
-    CANCELLED: -1
+    CANCELLED: -1,
   };
 
   const currentIndex = statusIndex[status] || 0;

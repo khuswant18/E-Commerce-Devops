@@ -34,7 +34,7 @@ export default function AdminDashboard() {
       const token = localStorage.getItem('adminToken');
       const response = await api.get('/admin/products', {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -163,10 +163,7 @@ export default function AdminDashboard() {
               <CardTitle>Add New Product</CardTitle>
             </CardHeader>
             <CardContent>
-              <AddProductForm 
-                categories={categories}
-                onSuccess={handleProductAdded}
-              />
+              <AddProductForm categories={categories} onSuccess={handleProductAdded} />
             </CardContent>
           </Card>
         )}
@@ -191,7 +188,7 @@ export default function AdminDashboard() {
             <CardTitle>All Products</CardTitle>
           </CardHeader>
           <CardContent>
-            <ProductList 
+            <ProductList
               products={products}
               onProductDeleted={handleProductDeleted}
               onProductEdit={handleEditProduct}

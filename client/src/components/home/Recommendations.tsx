@@ -1,16 +1,16 @@
-import ProductCard from "../shop/ProductCard";
-import { Button } from "@/components/ui/button";
-import { ArrowUp } from "lucide-react";
-import { useState, useEffect } from "react";
+import ProductCard from '../shop/ProductCard';
+import { Button } from '@/components/ui/button';
+import { ArrowUp } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useProducts } from "@/hooks/useApi";
+} from '@/components/ui/carousel';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useProducts } from '@/hooks/useApi';
 
 export default function Recommendations() {
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -25,8 +25,8 @@ export default function Recommendations() {
       const scrollTop = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
-      
-      const shouldShow = scrollTop > 300 || (scrollTop + windowHeight) >= (documentHeight - 100);
+
+      const shouldShow = scrollTop > 300 || scrollTop + windowHeight >= documentHeight - 100;
       setShowScrollTop(shouldShow);
     };
 
@@ -45,29 +45,27 @@ export default function Recommendations() {
         <div className="px-12">
           <Carousel
             opts={{
-              align: "start",
+              align: 'start',
               loop: true,
             }}
             className="w-full"
           >
             <CarouselContent className="-ml-4">
-              {isLoading ? (
-                Array.from({ length: 4 }).map((_, idx) => (
-                  <CarouselItem key={idx} className="pl-4 md:basis-1/2 lg:basis-1/4">
-                    <div className="flex flex-col gap-3">
-                      <Skeleton className="aspect-[3/4] rounded-xl" />
-                      <Skeleton className="h-4 w-3/4" />
-                      <Skeleton className="h-4 w-1/2" />
-                    </div>
-                  </CarouselItem>
-                ))
-              ) : (
-                products?.map((product: any) => (
-                  <CarouselItem key={product.id} className="pl-4 md:basis-1/2 lg:basis-1/4">
-                    <ProductCard {...product} />
-                  </CarouselItem>
-                ))
-              )}
+              {isLoading
+                ? Array.from({ length: 4 }).map((_, idx) => (
+                    <CarouselItem key={idx} className="pl-4 md:basis-1/2 lg:basis-1/4">
+                      <div className="flex flex-col gap-3">
+                        <Skeleton className="aspect-[3/4] rounded-xl" />
+                        <Skeleton className="h-4 w-3/4" />
+                        <Skeleton className="h-4 w-1/2" />
+                      </div>
+                    </CarouselItem>
+                  ))
+                : products?.map((product: any) => (
+                    <CarouselItem key={product.id} className="pl-4 md:basis-1/2 lg:basis-1/4">
+                      <ProductCard {...product} />
+                    </CarouselItem>
+                  ))}
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />
@@ -75,15 +73,15 @@ export default function Recommendations() {
         </div>
       </div>
 
-       {/* Floating Action Button */}
+      {/* Floating Action Button */}
       {showScrollTop && (
         <div className="fixed bottom-8 right-8 z-40">
-          <Button 
-            size="icon" 
+          <Button
+            size="icon"
             onClick={scrollToTop}
             className="h-12 w-12 rounded-full shadow-xl bg-white text-black hover:bg-gray-100 border border-gray-200"
           >
-             <ArrowUp className="h-5 w-5" />
+            <ArrowUp className="h-5 w-5" />
           </Button>
         </div>
       )}

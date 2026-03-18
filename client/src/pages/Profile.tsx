@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "wouter";
-import Navbar from "@/components/layout/Navbar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
-import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "@/contexts/AuthContext";
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'wouter';
+import Navbar from '@/components/layout/Navbar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   ChevronRight,
   User,
@@ -25,12 +25,12 @@ import {
   Trash2,
   Eye,
   EyeOff,
-  Loader2
-} from "lucide-react";
+  Loader2,
+} from 'lucide-react';
 
-const img1 = "/oversized_sage_green_tee-MEXFQ9d8.png";
-const img2 = "/oversized_black_graphic_tee-CoBCJBRr.png";
-const img3 = "/oversized_maroon_tee-298jHmWi.png";
+const img1 = '/oversized_sage_green_tee-MEXFQ9d8.png';
+const img2 = '/oversized_black_graphic_tee-CoBCJBRr.png';
+const img3 = '/oversized_maroon_tee-298jHmWi.png';
 
 export default function Profile() {
   const [, setLocation] = useLocation();
@@ -40,15 +40,20 @@ export default function Profile() {
   const [editForm, setEditForm] = useState({
     name: '',
     email: '',
-    phone: ''
+    phone: '',
   });
 
-  const { data: userData, isLoading, error, refetch } = useQuery({
+  const {
+    data: userData,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -64,9 +69,9 @@ export default function Profile() {
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       toast({
-        title: "Authentication Required",
-        description: "Please login to view your profile.",
-        variant: "destructive",
+        title: 'Authentication Required',
+        description: 'Please login to view your profile.',
+        variant: 'destructive',
       });
       setLocation('/login');
     }
@@ -77,7 +82,7 @@ export default function Profile() {
       setEditForm({
         name: userData.name || '',
         email: userData.email || '',
-        phone: userData.phone || ''
+        phone: userData.phone || '',
       });
     }
   }, [userData]);
@@ -85,8 +90,8 @@ export default function Profile() {
   const handleLogout = () => {
     logout();
     toast({
-      title: "Logged out",
-      description: "You have been logged out successfully.",
+      title: 'Logged out',
+      description: 'You have been logged out successfully.',
     });
     setLocation('/');
   };
@@ -97,7 +102,7 @@ export default function Profile() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(editForm),
       });
@@ -109,17 +114,17 @@ export default function Profile() {
       const updatedUser = await response.json();
       updateUser(updatedUser);
       toast({
-        title: "Profile updated",
-        description: "Your profile has been updated successfully.",
+        title: 'Profile updated',
+        description: 'Your profile has been updated successfully.',
       });
       setIsEditing(false);
       refetch();
     } catch (error) {
       console.error('Error updating profile:', error);
       toast({
-        title: "Error",
-        description: "Failed to update profile. Please try again.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to update profile. Please try again.',
+        variant: 'destructive',
       });
     }
   };
@@ -159,9 +164,7 @@ export default function Profile() {
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
             <p className="text-red-600 mb-4">Failed to load profile. Please try again.</p>
-            <Button onClick={() => window.location.reload()}>
-              Retry
-            </Button>
+            <Button onClick={() => window.location.reload()}>Retry</Button>
           </div>
         </div>
       </div>
@@ -189,7 +192,9 @@ export default function Profile() {
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-500">
-            <Link href="/" className="hover:text-black">Home</Link>
+            <Link href="/" className="hover:text-black">
+              Home
+            </Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-black">My Profile</span>
           </nav>
@@ -205,13 +210,21 @@ export default function Profile() {
                 <Avatar className="w-20 h-20 mx-auto mb-4">
                   <AvatarImage src={userData.avatar} alt={userData.name} />
                   <AvatarFallback className="text-xl">
-                    {userData.name ? userData.name.charAt(0).toUpperCase() : (userData.email ? userData.email.charAt(0).toUpperCase() : 'U')}
+                    {userData.name
+                      ? userData.name.charAt(0).toUpperCase()
+                      : userData.email
+                        ? userData.email.charAt(0).toUpperCase()
+                        : 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <h2 className="text-xl font-bold">{userData.name || 'User'}</h2>
                 <p className="text-gray-500 text-sm">{userData.email}</p>
                 <Badge variant="secondary" className="mt-2">
-                  Member since {new Date(userData.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                  Member since{' '}
+                  {new Date(userData.createdAt).toLocaleDateString('en-US', {
+                    month: 'long',
+                    year: 'numeric',
+                  })}
                 </Badge>
               </div>
 
@@ -223,7 +236,7 @@ export default function Profile() {
                 <NavItem icon={CreditCard} label="Payment Methods" />
                 <NavItem icon={Settings} label="Settings" />
                 <Separator className="my-4" />
-                <button 
+                <button
                   onClick={handleLogout}
                   className="w-full flex items-center gap-3 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                 >
@@ -248,11 +261,7 @@ export default function Profile() {
                 <div className="bg-white rounded-xl p-6 shadow-sm">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-bold">Personal Information</h3>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => setIsEditing(!isEditing)}
-                    >
+                    <Button variant="outline" size="sm" onClick={() => setIsEditing(!isEditing)}>
                       <Edit2 className="w-4 h-4 mr-2" />
                       {isEditing ? 'Cancel' : 'Edit'}
                     </Button>
@@ -263,36 +272,38 @@ export default function Profile() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="name">Full Name</Label>
-                          <Input 
-                            id="name" 
+                          <Input
+                            id="name"
                             value={editForm.name}
-                            onChange={(e) => setEditForm({...editForm, name: e.target.value})}
-                            className="mt-1" 
+                            onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                            className="mt-1"
                           />
                         </div>
                         <div>
                           <Label htmlFor="email">Email Address</Label>
-                          <Input 
-                            id="email" 
+                          <Input
+                            id="email"
                             type="email"
                             value={editForm.email}
-                            onChange={(e) => setEditForm({...editForm, email: e.target.value})}
-                            className="mt-1" 
+                            onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                            className="mt-1"
                           />
                         </div>
                         <div>
                           <Label htmlFor="phone">Phone Number</Label>
-                          <Input 
-                            id="phone" 
+                          <Input
+                            id="phone"
                             value={editForm.phone}
-                            onChange={(e) => setEditForm({...editForm, phone: e.target.value})}
-                            className="mt-1" 
+                            onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                            className="mt-1"
                           />
                         </div>
                       </div>
                       <div className="flex gap-3">
                         <Button onClick={handleSaveProfile}>Save Changes</Button>
-                        <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
+                        <Button variant="outline" onClick={() => setIsEditing(false)}>
+                          Cancel
+                        </Button>
                       </div>
                     </div>
                   ) : (
@@ -312,7 +323,9 @@ export default function Profile() {
                         </div>
                         <div>
                           <Label className="text-sm font-medium text-gray-500">Member Since</Label>
-                          <p className="mt-1 text-lg">{new Date(userData.createdAt).toLocaleDateString()}</p>
+                          <p className="mt-1 text-lg">
+                            {new Date(userData.createdAt).toLocaleDateString()}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -357,16 +370,23 @@ export default function Profile() {
   );
 }
 
-function NavItem({ icon: Icon, label, active, href }: { 
-  icon: any; 
-  label: string; 
-  active?: boolean; 
-  href?: string; 
+function NavItem({
+  icon: Icon,
+  label,
+  active,
+  href,
+}: {
+  icon: any;
+  label: string;
+  active?: boolean;
+  href?: string;
 }) {
   const content = (
-    <div className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-      active ? 'bg-black text-white' : 'hover:bg-gray-50'
-    }`}>
+    <div
+      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+        active ? 'bg-black text-white' : 'hover:bg-gray-50'
+      }`}
+    >
       <Icon className="w-4 h-4" />
       <span>{label}</span>
     </div>

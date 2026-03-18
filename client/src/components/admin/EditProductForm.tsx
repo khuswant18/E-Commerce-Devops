@@ -3,7 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, X, Upload } from 'lucide-react';
 
@@ -32,7 +38,12 @@ interface EditProductFormProps {
   onCancel: () => void;
 }
 
-export default function EditProductForm({ product, categories, onProductUpdated, onCancel }: EditProductFormProps) {
+export default function EditProductForm({
+  product,
+  categories,
+  onProductUpdated,
+  onCancel,
+}: EditProductFormProps) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -46,9 +57,9 @@ export default function EditProductForm({ product, categories, onProductUpdated,
   const [newImages, setNewImages] = useState<File[]>([]);
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -62,10 +73,13 @@ export default function EditProductForm({ product, categories, onProductUpdated,
       formData.append('upload_preset', 'your_upload_preset'); // Replace with your Cloudinary upload preset
 
       try {
-        const response = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', {
-          method: 'POST',
-          body: formData,
-        });
+        const response = await fetch(
+          'https://api.cloudinary.com/v1_1/your_cloud_name/image/upload',
+          {
+            method: 'POST',
+            body: formData,
+          }
+        );
 
         const data = await response.json();
         if (data.secure_url) {
@@ -82,8 +96,8 @@ export default function EditProductForm({ product, categories, onProductUpdated,
     }
 
     if (uploadedUrls.length > 0) {
-      setImages(prev => [...prev, ...uploadedUrls]);
-      setNewImages(prev => [...prev, ...Array.from(files)]);
+      setImages((prev) => [...prev, ...uploadedUrls]);
+      setNewImages((prev) => [...prev, ...Array.from(files)]);
       toast({
         title: 'Images Uploaded',
         description: `${uploadedUrls.length} image(s) uploaded successfully`,
@@ -92,8 +106,8 @@ export default function EditProductForm({ product, categories, onProductUpdated,
   };
 
   const removeImage = (index: number) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
-    setNewImages(prev => prev.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
+    setNewImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -107,7 +121,7 @@ export default function EditProductForm({ product, categories, onProductUpdated,
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           name: formData.name,
@@ -204,7 +218,10 @@ export default function EditProductForm({ product, categories, onProductUpdated,
 
         <div>
           <Label htmlFor="edit-category">Category *</Label>
-          <Select value={formData.categoryId} onValueChange={(value) => handleInputChange('categoryId', value)}>
+          <Select
+            value={formData.categoryId}
+            onValueChange={(value) => handleInputChange('categoryId', value)}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>

@@ -16,4 +16,3 @@ describe('generateTrackingSteps', () => {
     expect(steps[2].completed).toBe(false);
   });
 });
-  

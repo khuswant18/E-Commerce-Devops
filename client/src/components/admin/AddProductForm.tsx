@@ -3,9 +3,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { X } from 'lucide-react';
-import { Image } from "@unpic/react";
+import { Image } from '@unpic/react';
 
 interface Category {
   id: number;
@@ -40,7 +46,7 @@ export default function AddProductForm({ categories, onSuccess }: AddProductForm
 
       const data = await response.json();
       if (data.secure_url) {
-        setImages(prev => [...prev, data.secure_url]);
+        setImages((prev) => [...prev, data.secure_url]);
       } else {
         alert('Upload failed: ' + data.error?.message);
       }
@@ -53,7 +59,7 @@ export default function AddProductForm({ categories, onSuccess }: AddProductForm
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      Array.from(files).forEach(file => {
+      Array.from(files).forEach((file) => {
         if (file.type.startsWith('image/')) {
           uploadToCloudinary(file);
         }
@@ -62,7 +68,7 @@ export default function AddProductForm({ categories, onSuccess }: AddProductForm
   };
 
   const removeImage = (index: number) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -76,7 +82,7 @@ export default function AddProductForm({ categories, onSuccess }: AddProductForm
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           name,
@@ -176,12 +182,18 @@ export default function AddProductForm({ categories, onSuccess }: AddProductForm
           <p className="text-sm text-gray-500">
             Select multiple images to upload. They will be automatically uploaded.
           </p>
-          
+
           {images.length > 0 && (
             <div className="grid grid-cols-3 gap-4 mt-4">
               {images.map((url, index) => (
                 <div key={index} className="relative">
-                  <Image src={url} alt={`Product ${index + 1}`} layout="fullWidth" className="w-full h-24 object-cover rounded-lg" background="auto" />
+                  <Image
+                    src={url}
+                    alt={`Product ${index + 1}`}
+                    layout="fullWidth"
+                    className="w-full h-24 object-cover rounded-lg"
+                    background="auto"
+                  />
                   <Button
                     type="button"
                     variant="destructive"
@@ -195,7 +207,7 @@ export default function AddProductForm({ categories, onSuccess }: AddProductForm
               ))}
             </div>
           )}
-          
+
           {images.length < 3 && (
             <p className="text-sm text-red-500">Please upload at least 3 images</p>
           )}

@@ -19,7 +19,11 @@ interface ProductListProps {
   onProductEdit: (product: Product) => void;
 }
 
-export default function ProductList({ products, onProductDeleted, onProductEdit }: ProductListProps) {
+export default function ProductList({
+  products,
+  onProductDeleted,
+  onProductEdit,
+}: ProductListProps) {
   const handleDelete = async (productId: number) => {
     if (!confirm('Are you sure you want to delete this product?')) {
       return;
@@ -31,7 +35,7 @@ export default function ProductList({ products, onProductDeleted, onProductEdit 
       const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/products/${productId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -61,7 +65,11 @@ export default function ProductList({ products, onProductDeleted, onProductEdit 
           <div className="flex gap-4">
             {/* Product Image */}
             <img
-              src={product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/150?text=No+Image'}
+              src={
+                product.images && product.images.length > 0
+                  ? product.images[0]
+                  : 'https://via.placeholder.com/150?text=No+Image'
+              }
               alt={product.name}
               className="w-24 h-24 object-cover rounded"
               onError={(e) => {
@@ -79,30 +87,18 @@ export default function ProductList({ products, onProductDeleted, onProductEdit 
                 </div>
 
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onProductEdit(product)}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => onProductEdit(product)}>
                     Edit
                   </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(product.id)}
-                  >
+                  <Button variant="destructive" size="sm" onClick={() => handleDelete(product.id)}>
                     Delete
                   </Button>
                 </div>
               </div>
 
               <div className="flex gap-4 mt-3 text-sm">
-                <span className="font-semibold text-green-600">
-                  ₹{product.price.toFixed(2)}
-                </span>
-                <span className="text-gray-600">
-                  Stock: {product.stock}
-                </span>
+                <span className="font-semibold text-green-600">₹{product.price.toFixed(2)}</span>
+                <span className="text-gray-600">Stock: {product.stock}</span>
               </div>
             </div>
           </div>

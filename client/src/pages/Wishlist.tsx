@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "wouter";
-import Navbar from "@/components/layout/Navbar";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { Image } from "@unpic/react";
-import { ChevronRight, Trash2, Loader2, ShoppingCart } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'wouter';
+import Navbar from '@/components/layout/Navbar';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import { Image } from '@unpic/react';
+import { ChevronRight, Trash2, Loader2, ShoppingCart } from 'lucide-react';
 
 interface WishlistItem {
   id: number;
@@ -40,7 +40,7 @@ export default function Wishlist() {
       const token = localStorage.getItem('userToken');
       const response = await fetch(`${import.meta.env.VITE_API_URL}/wishlist`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -69,7 +69,7 @@ export default function Wishlist() {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/wishlist/${productId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -97,7 +97,7 @@ export default function Wishlist() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ productId: product.id }),
       });
@@ -144,7 +144,9 @@ export default function Wishlist() {
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-500">
-            <Link href="/" className="hover:text-black">Home</Link>
+            <Link href="/" className="hover:text-black">
+              Home
+            </Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-black">My Wishlist</span>
           </nav>
@@ -161,7 +163,11 @@ export default function Wishlist() {
                 <Link href={`/product/${item.product.id}`}>
                   <div className="aspect-[3/4] bg-gray-100">
                     <Image
-                      src={item.product.images && item.product.images.length > 0 ? item.product.images[0] : '/placeholder.png'}
+                      src={
+                        item.product.images && item.product.images.length > 0
+                          ? item.product.images[0]
+                          : '/placeholder.png'
+                      }
                       alt={item.product.name}
                       layout="fullWidth"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"
@@ -179,7 +185,9 @@ export default function Wishlist() {
                   <h4 className="font-medium text-sm line-clamp-2 mb-2">{item.product.name}</h4>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="font-bold text-red-500">₹{item.product.price.toFixed(2)}</span>
-                    <span className="text-sm text-gray-400 line-through">₹{(item.product.price * 1.5).toFixed(2)}</span>
+                    <span className="text-sm text-gray-400 line-through">
+                      ₹{(item.product.price * 1.5).toFixed(2)}
+                    </span>
                   </div>
                   <Button
                     onClick={() => addToCart(item.product)}
@@ -187,7 +195,7 @@ export default function Wishlist() {
                     disabled={item.product.stock === 0}
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
-                    {item.product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+                    {item.product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
                   </Button>
                 </div>
               </div>

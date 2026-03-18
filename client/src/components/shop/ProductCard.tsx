@@ -1,18 +1,13 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Eye, ShoppingCart, Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Link, useLocation } from "wouter";
-import { Image } from "@unpic/react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useWishlistStatus, useToggleWishlist, useAddToCart } from "@/hooks/useApi";
-import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Eye, ShoppingCart, Heart } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Link, useLocation } from 'wouter';
+import { Image } from '@unpic/react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useWishlistStatus, useToggleWishlist, useAddToCart } from '@/hooks/useApi';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProductCardProps {
   id: number;
@@ -27,7 +22,15 @@ interface ProductCardProps {
   };
 }
 
-export default function ProductCard({ id, name, price, imageUrl, images, category, stock }: ProductCardProps) {
+export default function ProductCard({
+  id,
+  name,
+  price,
+  imageUrl,
+  images,
+  category,
+  stock,
+}: ProductCardProps) {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
 
@@ -92,7 +95,7 @@ export default function ProductCard({ id, name, price, imageUrl, images, categor
         setIsInWishlist(data.isInWishlist);
         toast({
           title: data.isInWishlist ? 'Added to wishlist' : 'Removed from wishlist',
-          description: data.isInWishlist 
+          description: data.isInWishlist
             ? `${name} has been added to your wishlist`
             : `${name} has been removed from your wishlist`,
         });
@@ -105,12 +108,12 @@ export default function ProductCard({ id, name, price, imageUrl, images, categor
           description: 'Failed to update wishlist',
           variant: 'destructive',
         });
-      }
+      },
     });
   };
-  
+
   return (
-    <motion.div 
+    <motion.div
       className="group relative flex flex-col gap-3"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -132,7 +135,7 @@ export default function ProductCard({ id, name, price, imageUrl, images, categor
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
         </div>
       </Link>
-      
+
       <div className="absolute bottom-[120px] left-0 right-0 px-4 flex gap-2 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
         <Button
           onClick={addToCart}
@@ -152,19 +155,21 @@ export default function ProductCard({ id, name, price, imageUrl, images, categor
                 variant="secondary"
                 size="sm"
                 className={`bg-white/90 hover:bg-white shadow-lg transition-all duration-300 ${
-                  isInWishlist ? 'text-red-500 hover:text-red-600' : 'text-gray-600 hover:text-gray-700'
+                  isInWishlist
+                    ? 'text-red-500 hover:text-red-600'
+                    : 'text-gray-600 hover:text-gray-700'
                 }`}
               >
                 <motion.div
-                  animate={{ 
+                  animate={{
                     scale: toggleWishlistMutation.isPending ? [1, 1.2, 1] : 1,
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Heart 
+                  <Heart
                     className={`w-4 h-4 transition-all duration-300 ${
                       isInWishlist ? 'fill-current' : ''
-                    }`} 
+                    }`}
                   />
                 </motion.div>
               </Button>
@@ -183,7 +188,9 @@ export default function ProductCard({ id, name, price, imageUrl, images, categor
 
       <div className="space-y-1">
         <Link href={`/product/${id}`}>
-          <h3 className="font-medium text-base truncate pr-2 group-hover:text-gray-600 transition-colors cursor-pointer">{name}</h3>
+          <h3 className="font-medium text-base truncate pr-2 group-hover:text-gray-600 transition-colors cursor-pointer">
+            {name}
+          </h3>
         </Link>
         <p className="text-xs text-gray-500 uppercase tracking-wide">{category.name}</p>
         <div className="flex items-center gap-2 mt-1">

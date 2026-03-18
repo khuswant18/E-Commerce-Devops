@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import { Link } from "wouter";
-import Navbar from "@/components/layout/Navbar";
-import Filters from "@/components/shop/Filters";
-import ProductCard from "@/components/shop/ProductCard";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { SlidersHorizontal, Grid3X3, LayoutGrid, ChevronDown, ChevronRight } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { Link } from 'wouter';
+import Navbar from '@/components/layout/Navbar';
+import Filters from '@/components/shop/Filters';
+import ProductCard from '@/components/shop/ProductCard';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { SlidersHorizontal, Grid3X3, LayoutGrid, ChevronDown, ChevronRight } from 'lucide-react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useProducts } from "@/hooks/useApi";
+} from '@/components/ui/select';
+import { useProducts } from '@/hooks/useApi';
 
 interface Category {
   id: number;
@@ -55,13 +55,15 @@ export default function Shop() {
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-500">
-            <Link href="/" className="hover:text-black">Home</Link>
+            <Link href="/" className="hover:text-black">
+              Home
+            </Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-black">Shop</span>
           </nav>
         </div>
       </div>
-      
+
       {/* Page Header */}
       <div className="bg-gray-50 py-8">
         <div className="container mx-auto px-4">
@@ -73,7 +75,6 @@ export default function Shop() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          
           {/* Sidebar Filters - Desktop */}
           <aside className="w-full lg:w-64 hidden lg:block shrink-0">
             <Filters />
@@ -98,18 +99,20 @@ export default function Shop() {
                 </SheetContent>
               </Sheet>
 
-              <p className="text-sm text-gray-500 hidden lg:block">{products?.length || 0} products</p>
+              <p className="text-sm text-gray-500 hidden lg:block">
+                {products?.length || 0} products
+              </p>
 
               <div className="flex items-center gap-4">
                 {/* Grid Toggle */}
                 <div className="hidden md:flex items-center gap-2 border rounded-lg p-1">
-                  <button 
+                  <button
                     onClick={() => setGridCols(2)}
                     className={`p-1.5 rounded ${gridCols === 2 ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
                   >
                     <Grid3X3 className="w-4 h-4" />
                   </button>
-                  <button 
+                  <button
                     onClick={() => setGridCols(3)}
                     className={`p-1.5 rounded ${gridCols === 3 ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
                   >
@@ -134,7 +137,9 @@ export default function Shop() {
             </div>
 
             {/* Product Grid */}
-            <div className={`grid grid-cols-1 sm:grid-cols-2 ${gridCols === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-x-6 gap-y-10`}>
+            <div
+              className={`grid grid-cols-1 sm:grid-cols-2 ${gridCols === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-x-6 gap-y-10`}
+            >
               {products?.map((product) => (
                 <ProductCard key={product.id} {...product} />
               ))}

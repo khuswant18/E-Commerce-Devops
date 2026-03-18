@@ -1,12 +1,12 @@
-import { motion } from "framer-motion";
-import { Image } from "@unpic/react";
+import { motion } from 'framer-motion';
+import { Image } from '@unpic/react';
 
 export default function Hero() {
   return (
     <section className="relative w-full h-[80vh] bg-slate-950 overflow-hidden">
       <div className="absolute inset-0">
         <Image
-          src='./HERO.png'
+          src="./HERO.png"
           alt="Urban Collection"
           layout="fullWidth"
           className="w-full h-full object-cover opacity-55"
@@ -19,19 +19,26 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           className="flex flex-col items-center"
         >
-          <motion.div 
+          <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
             className="mb-6"
           >
-             <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="stroke-cyan-100 stroke-[2px]">
-                <path d="M20 20 L50 80 L80 20" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="50" cy="50" r="45" strokeOpacity="0.5" />
-             </svg>
+            <svg
+              width="80"
+              height="80"
+              viewBox="0 0 100 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-cyan-100 stroke-[2px]"
+            >
+              <path d="M20 20 L50 80 L80 20" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="50" cy="50" r="45" strokeOpacity="0.5" />
+            </svg>
           </motion.div>
 
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-[0.3em] mb-4 font-sans">
@@ -47,7 +54,8 @@ export default function Hero() {
             transition={{ delay: 0.8 }}
             className="mt-8 max-w-lg text-slate-200/80 text-sm md:text-base leading-relaxed"
           >
-            Built for city pace and all-day comfort—curated drops, refined cuts, and statement layers that stand out without trying too hard.
+            Built for city pace and all-day comfort—curated drops, refined cuts, and statement
+            layers that stand out without trying too hard.
           </motion.p>
         </motion.div>
       </div>

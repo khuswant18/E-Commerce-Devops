@@ -1,6 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useToast } from "@/hooks/use-toast";
-import api from "@/lib/api";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useToast } from '@/hooks/use-toast';
+import api from '@/lib/api';
 
 export interface Product {
   id: number;
@@ -31,11 +31,9 @@ export interface CartItem {
 // Products Queries
 export const useProducts = (category?: string) => {
   return useQuery({
-    queryKey: ["products", category],
+    queryKey: ['products', category],
     queryFn: async () => {
-      const url = category
-        ? `/products?category=${encodeURIComponent(category)}`
-        : "/products";
+      const url = category ? `/products?category=${encodeURIComponent(category)}` : '/products';
       const response = await api.get(url);
       return response.data.products || response.data;
     },
@@ -46,7 +44,7 @@ export const useProducts = (category?: string) => {
 
 export const useProduct = (id: string | number) => {
   return useQuery({
-    queryKey: ["product", id],
+    queryKey: ['product', id],
     queryFn: async () => {
       const response = await api.get(`/products/${id}`);
       return response.data.product || response.data;
@@ -59,9 +57,9 @@ export const useProduct = (id: string | number) => {
 
 export const useCategories = () => {
   return useQuery({
-    queryKey: ["categories"],
+    queryKey: ['categories'],
     queryFn: async () => {
-      const response = await api.get("/categories");
+      const response = await api.get('/categories');
       return response.data.categories || response.data;
     },
     staleTime: 1000 * 60 * 30, // 30 minutes
@@ -72,13 +70,13 @@ export const useCategories = () => {
 // Cart Queries
 export const useCart = () => {
   return useQuery({
-    queryKey: ["cart"],
+    queryKey: ['cart'],
     queryFn: async () => {
       const token = localStorage.getItem('userToken');
       if (!token) throw new Error('Not authenticated');
 
-      const response = await api.get("/cart", {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await api.get('/cart', {
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data.cartItems || [];
     },
@@ -96,9 +94,13 @@ export const useAddToCart = () => {
       const token = localStorage.getItem('userToken');
       if (!token) throw new Error('Not authenticated');
 
-      const response = await api.post("/cart", { productId, quantity }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.post(
+        '/cart',
+        { productId, quantity },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       return response.data;
     },
     onSuccess: () => {
@@ -126,13 +128,17 @@ export const useUpdateCartItem = () => {
       const token = localStorage.getItem('userToken');
       if (!token) throw new Error('Not authenticated');
 
-      const response = await api.put(`/cart/${productId}`, { quantity }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.put(
+        `/cart/${productId}`,
+        { quantity },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
 };
@@ -146,12 +152,12 @@ export const useRemoveFromCart = () => {
       if (!token) throw new Error('Not authenticated');
 
       const response = await api.delete(`/cart/${productId}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
 };
@@ -159,13 +165,13 @@ export const useRemoveFromCart = () => {
 // Wishlist Queries
 export const useWishlist = () => {
   return useQuery({
-    queryKey: ["wishlist"],
+    queryKey: ['wishlist'],
     queryFn: async () => {
       const token = localStorage.getItem('userToken');
       if (!token) throw new Error('Not authenticated');
 
-      const response = await api.get("/wishlist", {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await api.get('/wishlist', {
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data.wishlist || response.data;
     },
@@ -176,13 +182,13 @@ export const useWishlist = () => {
 
 export const useWishlistStatus = (productId: number) => {
   return useQuery({
-    queryKey: ["wishlist", "status", productId],
+    queryKey: ['wishlist', 'status', productId],
     queryFn: async () => {
       const token = localStorage.getItem('userToken');
       if (!token) throw new Error('Not authenticated');
 
       const response = await api.get(`/wishlist/${productId}/check`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     },
@@ -199,14 +205,18 @@ export const useToggleWishlist = () => {
       const token = localStorage.getItem('userToken');
       if (!token) throw new Error('Not authenticated');
 
-      const response = await api.put(`/wishlist/${productId}`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.put(
+        `/wishlist/${productId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       return response.data;
     },
     onSuccess: (_, productId) => {
-      queryClient.invalidateQueries({ queryKey: ["wishlist"] });
-      queryClient.invalidateQueries({ queryKey: ["wishlist", "status", productId] });
+      queryClient.invalidateQueries({ queryKey: ['wishlist'] });
+      queryClient.invalidateQueries({ queryKey: ['wishlist', 'status', productId] });
     },
   });
 };

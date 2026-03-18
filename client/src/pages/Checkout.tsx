@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "wouter";
-import Navbar from "@/components/layout/Navbar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Separator } from "@/components/ui/separator";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useAuth } from "@/contexts/AuthContext";
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'wouter';
+import Navbar from '@/components/layout/Navbar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Separator } from '@/components/ui/separator';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useToast } from '@/hooks/use-toast';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   ChevronRight,
   CreditCard,
@@ -18,9 +18,9 @@ import {
   Lock,
   Wallet,
   Building2,
-  Loader2
-} from "lucide-react";
-import { Image } from "@unpic/react";
+  Loader2,
+} from 'lucide-react';
+import { Image } from '@unpic/react';
 
 interface CartItem {
   id: number;
@@ -40,10 +40,10 @@ export default function Checkout() {
   const { toast } = useToast();
   const { isAuthenticated, token } = useAuth();
   const [step, setStep] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState('card');
   const [saveInfo, setSaveInfo] = useState(true);
-  const [shippingAddress, setShippingAddress] = useState("");
-  
+  const [shippingAddress, setShippingAddress] = useState('');
+
   const isBuyNow = new URLSearchParams(window.location.search).get('buyNow') === 'true';
   const [buyNowItem, setBuyNowItem] = useState<CartItem | null>(null);
 
@@ -58,7 +58,7 @@ export default function Checkout() {
             userId: 0,
             productId: item.productId,
             quantity: item.quantity,
-            product: item.product
+            product: item.product,
           });
         } catch (error) {
           console.error('Error parsing buy now item:', error);
@@ -72,7 +72,7 @@ export default function Checkout() {
     queryFn: async () => {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/cart`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -90,7 +90,11 @@ export default function Checkout() {
     enabled: isAuthenticated,
   });
 
-  const cartItems = Array.isArray(cartData?.cartItems) ? cartData.cartItems : (Array.isArray(cartData) ? cartData : []);
+  const cartItems = Array.isArray(cartData?.cartItems)
+    ? cartData.cartItems
+    : Array.isArray(cartData)
+      ? cartData
+      : [];
 
   const createOrderMutation = useMutation({
     mutationFn: async (address: string) => {
@@ -99,12 +103,12 @@ export default function Checkout() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             productId: buyNowItem.productId,
             quantity: buyNowItem.quantity,
-            shippingAddress: address 
+            shippingAddress: address,
           }),
         });
 
@@ -115,12 +119,12 @@ export default function Checkout() {
 
         return response.json();
       }
-      
+
       const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ shippingAddress: address }),
       });
@@ -136,18 +140,18 @@ export default function Checkout() {
       if (isBuyNow) {
         sessionStorage.removeItem('buyNowItem');
       }
-      
+
       toast({
-        title: "Order Placed Successfully!",
+        title: 'Order Placed Successfully!',
         description: `Your order ${order.id} has been placed.`,
       });
       setLocation('/orders');
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to Place Order",
+        title: 'Failed to Place Order',
         description: error.message,
-        variant: "destructive",
+        variant: 'destructive',
       });
     },
   });
@@ -166,17 +170,22 @@ export default function Checkout() {
   }, [cartItems, cartLoading, setLocation, isBuyNow]);
 
   const displayItems = isBuyNow && buyNowItem ? [buyNowItem] : cartItems;
-  
-  const subtotal = Array.isArray(displayItems) ? displayItems.reduce((sum: number, item: CartItem) => sum + item.product.price * item.quantity, 0) : 0;
+
+  const subtotal = Array.isArray(displayItems)
+    ? displayItems.reduce(
+        (sum: number, item: CartItem) => sum + item.product.price * item.quantity,
+        0
+      )
+    : 0;
   const shipping = subtotal > 1000 ? 0 : 99;
   const total = subtotal + shipping;
 
   const handlePlaceOrder = () => {
     if (!shippingAddress.trim()) {
       toast({
-        title: "Shipping Address Required",
-        description: "Please enter your shipping address.",
-        variant: "destructive",
+        title: 'Shipping Address Required',
+        description: 'Please enter your shipping address.',
+        variant: 'destructive',
       });
       return;
     }
@@ -216,7 +225,12 @@ export default function Checkout() {
       <div className="min-h-screen bg-gray-50">
         <Navbar />
         <div className="container mx-auto px-4 py-8 text-center">
-          <p>Your cart is empty. <Link href="/shop" className="text-blue-600 hover:underline">Continue shopping</Link></p>
+          <p>
+            Your cart is empty.{' '}
+            <Link href="/shop" className="text-blue-600 hover:underline">
+              Continue shopping
+            </Link>
+          </p>
         </div>
       </div>
     );
@@ -230,9 +244,13 @@ export default function Checkout() {
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-500">
-            <Link href="/" className="hover:text-black">Home</Link>
+            <Link href="/" className="hover:text-black">
+              Home
+            </Link>
             <ChevronRight className="w-4 h-4" />
-            <Link href="/cart" className="hover:text-black">Cart</Link>
+            <Link href="/cart" className="hover:text-black">
+              Cart
+            </Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-black">Checkout</span>
           </nav>
@@ -245,18 +263,36 @@ export default function Checkout() {
           <div className="lg:col-span-2 space-y-6">
             {/* Progress Steps */}
             <div className="flex items-center gap-4 mb-8">
-              <div className={`flex items-center gap-2 ${step >= 1 ? 'text-black' : 'text-gray-400'}`}>
-                <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= 1 ? 'bg-black text-white' : 'bg-gray-200'}`}>1</span>
+              <div
+                className={`flex items-center gap-2 ${step >= 1 ? 'text-black' : 'text-gray-400'}`}
+              >
+                <span
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= 1 ? 'bg-black text-white' : 'bg-gray-200'}`}
+                >
+                  1
+                </span>
                 <span className="hidden sm:inline font-medium">Information</span>
               </div>
               <div className="flex-1 h-px bg-gray-200" />
-              <div className={`flex items-center gap-2 ${step >= 2 ? 'text-black' : 'text-gray-400'}`}>
-                <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= 2 ? 'bg-black text-white' : 'bg-gray-200'}`}>2</span>
+              <div
+                className={`flex items-center gap-2 ${step >= 2 ? 'text-black' : 'text-gray-400'}`}
+              >
+                <span
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= 2 ? 'bg-black text-white' : 'bg-gray-200'}`}
+                >
+                  2
+                </span>
                 <span className="hidden sm:inline font-medium">Shipping</span>
               </div>
               <div className="flex-1 h-px bg-gray-200" />
-              <div className={`flex items-center gap-2 ${step >= 3 ? 'text-black' : 'text-gray-400'}`}>
-                <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= 3 ? 'bg-black text-white' : 'bg-gray-200'}`}>3</span>
+              <div
+                className={`flex items-center gap-2 ${step >= 3 ? 'text-black' : 'text-gray-400'}`}
+              >
+                <span
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= 3 ? 'bg-black text-white' : 'bg-gray-200'}`}
+                >
+                  3
+                </span>
                 <span className="hidden sm:inline font-medium">Payment</span>
               </div>
             </div>
@@ -314,8 +350,8 @@ export default function Checkout() {
                 </div>
               </div>
               <div className="flex items-center space-x-2 mt-4">
-                <Checkbox 
-                  id="saveInfo" 
+                <Checkbox
+                  id="saveInfo"
                   checked={saveInfo}
                   onCheckedChange={(checked) => setSaveInfo(checked as boolean)}
                 />
@@ -372,8 +408,14 @@ export default function Checkout() {
             {/* Payment Method */}
             <div className="bg-white rounded-xl p-6 shadow-sm">
               <h2 className="text-xl font-bold mb-6">Payment Method</h2>
-              <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-3">
-                <div className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'card' ? 'border-black' : 'hover:border-gray-400'}`}>
+              <RadioGroup
+                value={paymentMethod}
+                onValueChange={setPaymentMethod}
+                className="space-y-3"
+              >
+                <div
+                  className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'card' ? 'border-black' : 'hover:border-gray-400'}`}
+                >
                   <div className="flex items-center gap-3">
                     <RadioGroupItem value="card" id="card" />
                     <Label htmlFor="card" className="cursor-pointer flex items-center gap-2">
@@ -382,7 +424,9 @@ export default function Checkout() {
                     </Label>
                   </div>
                 </div>
-                <div className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'upi' ? 'border-black' : 'hover:border-gray-400'}`}>
+                <div
+                  className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'upi' ? 'border-black' : 'hover:border-gray-400'}`}
+                >
                   <div className="flex items-center gap-3">
                     <RadioGroupItem value="upi" id="upi" />
                     <Label htmlFor="upi" className="cursor-pointer flex items-center gap-2">
@@ -391,7 +435,9 @@ export default function Checkout() {
                     </Label>
                   </div>
                 </div>
-                <div className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'netbanking' ? 'border-black' : 'hover:border-gray-400'}`}>
+                <div
+                  className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'netbanking' ? 'border-black' : 'hover:border-gray-400'}`}
+                >
                   <div className="flex items-center gap-3">
                     <RadioGroupItem value="netbanking" id="netbanking" />
                     <Label htmlFor="netbanking" className="cursor-pointer flex items-center gap-2">
@@ -400,7 +446,9 @@ export default function Checkout() {
                     </Label>
                   </div>
                 </div>
-                <div className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'cod' ? 'border-black' : 'hover:border-gray-400'}`}>
+                <div
+                  className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'cod' ? 'border-black' : 'hover:border-gray-400'}`}
+                >
                   <div className="flex items-center gap-3">
                     <RadioGroupItem value="cod" id="cod" />
                     <Label htmlFor="cod" className="cursor-pointer flex items-center gap-2">
@@ -445,7 +493,7 @@ export default function Checkout() {
             </div>
 
             {/* Place Order Button */}
-            <Button 
+            <Button
               className="w-full h-14 bg-black hover:bg-gray-800 text-lg disabled:opacity-50"
               onClick={handlePlaceOrder}
               disabled={createOrderMutation.isPending}
@@ -455,7 +503,9 @@ export default function Checkout() {
               ) : (
                 <Lock className="w-5 h-5 mr-2" />
               )}
-              {createOrderMutation.isPending ? 'Placing Order...' : `Place Order - ₹${total.toFixed(2)}`}
+              {createOrderMutation.isPending
+                ? 'Placing Order...'
+                : `Place Order - ₹${total.toFixed(2)}`}
             </Button>
 
             <p className="text-xs text-center text-gray-500">
@@ -473,14 +523,22 @@ export default function Checkout() {
                 {displayItems.map((item: CartItem) => (
                   <div key={item.id} className="flex gap-4">
                     <div className="w-16 h-20 bg-gray-100 rounded-lg overflow-hidden relative shrink-0">
-                      <Image src={item.product.images[0]} alt={item.product.name} layout="fullWidth" className="w-full h-full object-cover" background="auto" />
+                      <Image
+                        src={item.product.images[0]}
+                        alt={item.product.name}
+                        layout="fullWidth"
+                        className="w-full h-full object-cover"
+                        background="auto"
+                      />
                       <span className="absolute -top-1 -right-1 w-5 h-5 bg-black text-white text-xs rounded-full flex items-center justify-center">
                         {item.quantity}
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-sm font-medium line-clamp-1">{item.product.name}</h3>
-                      <p className="text-sm font-medium mt-1">₹{(item.product.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-sm font-medium mt-1">
+                        ₹{(item.product.price * item.quantity).toFixed(2)}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -496,8 +554,8 @@ export default function Checkout() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
-                  <span className={shipping === 0 ? "text-green-600" : ""}>
-                    {shipping === 0 ? "FREE" : `₹${shipping.toFixed(2)}`}
+                  <span className={shipping === 0 ? 'text-green-600' : ''}>
+                    {shipping === 0 ? 'FREE' : `₹${shipping.toFixed(2)}`}
                   </span>
                 </div>
                 <div className="flex justify-between">

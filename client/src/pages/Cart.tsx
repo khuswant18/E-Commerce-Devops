@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "wouter";
-import Navbar from "@/components/layout/Navbar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
-import { motion, AnimatePresence } from "framer-motion";
-import { Image } from "@unpic/react";
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'wouter';
+import Navbar from '@/components/layout/Navbar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Image } from '@unpic/react';
 import {
   Minus,
   Plus,
@@ -17,9 +17,9 @@ import {
   Truck,
   Tag,
   ChevronRight,
-  Loader2
-} from "lucide-react";
-import { useCart, useUpdateCartItem, useRemoveFromCart } from "@/hooks/useApi";
+  Loader2,
+} from 'lucide-react';
+import { useCart, useUpdateCartItem, useRemoveFromCart } from '@/hooks/useApi';
 
 interface CartItem {
   id: number;
@@ -48,9 +48,9 @@ export default function Cart() {
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       toast({
-        title: "Authentication Required",
-        description: "Please login to view your cart.",
-        variant: "destructive",
+        title: 'Authentication Required',
+        description: 'Please login to view your cart.',
+        variant: 'destructive',
       });
       setLocation('/login');
     }
@@ -90,7 +90,7 @@ export default function Cart() {
 
   const applyCoupon = () => {
     const validCoupons = ['SAVE10', 'WELCOME20', 'FIRST50'];
-    
+
     if (validCoupons.includes(couponCode.toUpperCase())) {
       setAppliedCoupon(couponCode.toUpperCase());
       toast({
@@ -106,11 +106,16 @@ export default function Cart() {
     }
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-  const discount = appliedCoupon === 'SAVE10' ? subtotal * 0.1 : 
-                  appliedCoupon === 'WELCOME20' ? subtotal * 0.2 : 
-                  appliedCoupon === 'FIRST50' ? subtotal * 0.5 : 0;
-  const shipping = cartItems.length === 0 ? 0 : (subtotal >= 999 ? 0 : 49);
+  const subtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const discount =
+    appliedCoupon === 'SAVE10'
+      ? subtotal * 0.1
+      : appliedCoupon === 'WELCOME20'
+        ? subtotal * 0.2
+        : appliedCoupon === 'FIRST50'
+          ? subtotal * 0.5
+          : 0;
+  const shipping = cartItems.length === 0 ? 0 : subtotal >= 999 ? 0 : 49;
   const total = subtotal - discount + shipping;
 
   if (isLoading) {
@@ -147,7 +152,9 @@ export default function Cart() {
       {/* Breadcrumb */}
       <div className="container mx-auto px-4 py-4">
         <nav className="flex items-center gap-2 text-sm text-gray-500">
-          <Link href="/" className="hover:text-black">Home</Link>
+          <Link href="/" className="hover:text-black">
+            Home
+          </Link>
           <ChevronRight className="w-4 h-4" />
           <span className="text-black">Shopping Cart</span>
         </nav>
@@ -164,7 +171,8 @@ export default function Cart() {
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-center gap-3">
                 <Truck className="w-5 h-5 text-yellow-600" />
                 <p className="text-sm">
-                  Add <strong>₹{(999 - subtotal).toFixed(2)}</strong> more to get <strong>FREE shipping!</strong>
+                  Add <strong>₹{(999 - subtotal).toFixed(2)}</strong> more to get{' '}
+                  <strong>FREE shipping!</strong>
                 </p>
               </div>
             )}
@@ -184,7 +192,11 @@ export default function Cart() {
                     <Link href={`/product/${item.product.id}`}>
                       <div className="w-24 h-32 md:w-32 md:h-40 bg-gray-100 rounded-lg overflow-hidden shrink-0">
                         <Image
-                          src={item.product.images && item.product.images.length > 0 ? item.product.images[0] : 'https://via.placeholder.com/300x400?text=No+Image'}
+                          src={
+                            item.product.images && item.product.images.length > 0
+                              ? item.product.images[0]
+                              : 'https://via.placeholder.com/300x400?text=No+Image'
+                          }
                           alt={item.product.name}
                           layout="fullWidth"
                           className="w-full h-full object-cover hover:scale-105 transition-transform"
@@ -219,8 +231,10 @@ export default function Cart() {
                           >
                             <Minus className="w-4 h-4" />
                           </button>
-                          <span className="w-10 text-center text-sm font-medium">{item.quantity}</span>
-                          <button 
+                          <span className="w-10 text-center text-sm font-medium">
+                            {item.quantity}
+                          </span>
+                          <button
                             onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
                             disabled={updateCartMutation.isPending}
                             className="p-2 hover:bg-gray-100 transition-colors disabled:opacity-50"
@@ -231,9 +245,11 @@ export default function Cart() {
 
                         {/* Price */}
                         <div className="text-right">
-                          <p className="font-bold text-lg">₹{(item.product.price * item.quantity).toFixed(2)}</p>
+                          <p className="font-bold text-lg">
+                            ₹{(item.product.price * item.quantity).toFixed(2)}
+                          </p>
                           <p className="text-sm text-gray-400 line-through">
-                            ₹{((item.product.price * 1.5) * item.quantity).toFixed(2)}
+                            ₹{(item.product.price * 1.5 * item.quantity).toFixed(2)}
                           </p>
                         </div>
                       </div>
@@ -262,18 +278,14 @@ export default function Cart() {
                 <div className="flex gap-2">
                   <div className="relative flex-1">
                     <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <Input 
+                    <Input
                       placeholder="Enter code"
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value)}
                       className="pl-10"
                     />
                   </div>
-                  <Button 
-                    variant="outline" 
-                    onClick={applyCoupon}
-                    disabled={!couponCode}
-                  >
+                  <Button variant="outline" onClick={applyCoupon} disabled={!couponCode}>
                     Apply
                   </Button>
                 </div>
@@ -301,7 +313,15 @@ export default function Cart() {
                 )}
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
-                  <span>{cartItems.length === 0 ? '₹0.00' : (shipping === 0 ? <span className="text-green-600">FREE</span> : `₹${shipping.toFixed(2)}`)}</span>
+                  <span>
+                    {cartItems.length === 0 ? (
+                      '₹0.00'
+                    ) : shipping === 0 ? (
+                      <span className="text-green-600">FREE</span>
+                    ) : (
+                      `₹${shipping.toFixed(2)}`
+                    )}
+                  </span>
                 </div>
               </div>
 
@@ -313,7 +333,7 @@ export default function Cart() {
               </div>
 
               <Link href="/checkout">
-                <Button 
+                <Button
                   className="w-full h-12 bg-black hover:bg-gray-800 text-base"
                   disabled={cartItems.length === 0}
                 >

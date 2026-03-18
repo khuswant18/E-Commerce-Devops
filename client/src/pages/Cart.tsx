@@ -294,7 +294,7 @@ export default function Cart() {
                     Coupon "{appliedCoupon}" applied! 10% off
                   </p>
                 )}
-                <p className="text-xs text-gray-500 mt-2">Try: VYRAL10</p>
+                <p className="text-xs text-gray-500 mt-2">Try: SMART10</p>
               </div>
 
               <Separator className="my-4" />
@@ -359,7 +359,7 @@ export default function Cart() {
       {/* Footer */}
       <footer className="bg-black text-white py-12 mt-12">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-gray-400">© 2026 VYRAL. All rights reserved.</p>
+          <p className="text-sm text-gray-400">© 2026 ShopSmart. All rights reserved.</p>
         </div>
       </footer>
     </div>

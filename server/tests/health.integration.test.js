@@ -13,4 +13,4 @@ describe('API health and fallback routes', () => {
     expect(response.status).toBe(404);
     expect(response.body).toEqual({ error: 'Route not found' });
   });
-});
+}); 

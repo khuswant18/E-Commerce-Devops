@@ -193,7 +193,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div>
-              <h3 className="font-bold text-lg mb-4 tracking-[0.16em]">NOVA STREET</h3>
+              <h3 className="font-bold text-lg mb-4 tracking-wide">ShopSmart</h3>
               <p className="text-slate-300 text-sm">
                 Premium streetwear brand delivering bold fashion with uncompromising quality.
               </p>
@@ -275,7 +275,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-slate-800 pt-8 text-center">
-            <p className="text-sm text-slate-400">© 2026 NOVA STREET. All rights reserved.</p>
+            <p className="text-sm text-slate-400">© 2026 ShopSmart. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -246,7 +246,7 @@ export default function Orders() {
       {/* Footer */}
       <footer className="bg-black text-white py-12 mt-12">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-gray-400">© 2026 VYRAL. All rights reserved.</p>
+          <p className="text-sm text-gray-400">© 2026 ShopSmart. All rights reserved.</p>
         </div>
       </footer>
     </div>

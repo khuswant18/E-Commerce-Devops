@@ -12,11 +12,11 @@ export default function Navbar() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { isAuthenticated, user, logout } = useAuth();
-  const [isSearchOpen] = useState(false);
+  const [isSearchOpen] = useState(false); 
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
-  const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const userMenuRef = useRef<HTMLDivElement | null>(null); 
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -94,7 +94,7 @@ export default function Navbar() {
             <div className="w-12 h-12 rounded-2xl overflow-hidden brand-gradient flex items-center justify-center cursor-pointer hover:scale-105 transition-transform duration-300 shadow-md">
               <Image
                 src={logo}
-                alt="NOVA STREET"
+                alt="ShopSmart"
                 layout="fullWidth"
                 className="w-full h-full object-cover"
                 background="auto"
@@ -103,8 +103,8 @@ export default function Navbar() {
           </Link>
 
           <Link href="/">
-            <span className="hidden sm:inline-block font-semibold tracking-[0.18em] text-sm text-slate-800 cursor-pointer">
-              NOVA STREET
+            <span className="hidden sm:inline-block font-semibold tracking-wide text-lg text-slate-800 cursor-pointer">
+              ShopSmart
             </span>
           </Link>
 

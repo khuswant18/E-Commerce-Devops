@@ -71,7 +71,7 @@ export default function Collections() {
                       </div>
                     </CarouselItem> 
                   ))
-                : categories?.map((item, idx) => (
+                : categories?.map((item: any, idx: number) => (
                     <CarouselItem key={idx} className="pl-4 basis-1/2 md:basis-1/4 lg:basis-1/6">
                       <div
                         onClick={() => handleCategoryClick(item.name)}

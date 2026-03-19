@@ -106,7 +106,7 @@ export default function Cart() {
     }
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const subtotal = cartItems.reduce((sum: number, item: CartItem) => sum + item.product.price * item.quantity, 0);
   const discount =
     appliedCoupon === 'SAVE10'
       ? subtotal * 0.1
@@ -178,7 +178,7 @@ export default function Cart() {
             )}
 
             <AnimatePresence>
-              {cartItems.map((item) => (
+              {cartItems.map((item:any) => (
                 <motion.div
                   key={item.id}
                   layout
@@ -216,6 +216,7 @@ export default function Cart() {
                         <button
                           onClick={() => removeItem(item.product.id)}
                           className="p-1 hover:bg-gray-100 rounded-full shrink-0"
+                          title="Remove item from cart"
                         >
                           <X className="w-5 h-5 text-gray-400" />
                         </button>
@@ -227,6 +228,7 @@ export default function Cart() {
                           <button
                             onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
                             disabled={updateCartMutation.isPending}
+                            title="Remove item from cart"
                             className="p-2 hover:bg-gray-100 transition-colors disabled:opacity-50"
                           >
                             <Minus className="w-4 h-4" />
@@ -237,6 +239,7 @@ export default function Cart() {
                           <button
                             onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
                             disabled={updateCartMutation.isPending}
+                            title="Remove item from cart"
                             className="p-2 hover:bg-gray-100 transition-colors disabled:opacity-50"
                           >
                             <Plus className="w-4 h-4" />

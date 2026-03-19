@@ -177,6 +177,7 @@ export default function Wishlist() {
                 </Link>
                 <button
                   onClick={() => removeFromWishlist(item.product.id)}
+                  title="Remove item from cart"
                   className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-red-50"
                 >
                   <Trash2 className="w-4 h-4 text-red-500" />

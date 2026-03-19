@@ -51,7 +51,7 @@ export default function Shop() {
     <div className="min-h-screen bg-white font-sans text-gray-900">
       <Navbar />
 
-      {/* Breadcrumb */}
+
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-500">
@@ -64,7 +64,7 @@ export default function Shop() {
         </div>
       </div>
 
-      {/* Page Header */}
+
       <div className="bg-gray-50 py-8">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold text-center">Shop All</h1>
@@ -72,19 +72,19 @@ export default function Shop() {
         </div>
       </div>
 
-      {/* Main Content */}
+
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Filters - Desktop */}
+
           <aside className="w-full lg:w-64 hidden lg:block shrink-0">
             <Filters />
           </aside>
 
-          {/* Products Section */}
+
           <div className="flex-1">
-            {/* Toolbar */}
+
             <div className="flex items-center justify-between mb-6 pb-4 border-b">
-              {/* Mobile Filter Button */}
+
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" className="lg:hidden flex items-center gap-2">
@@ -104,23 +104,25 @@ export default function Shop() {
               </p>
 
               <div className="flex items-center gap-4">
-                {/* Grid Toggle */}
+
                 <div className="hidden md:flex items-center gap-2 border rounded-lg p-1">
                   <button
                     onClick={() => setGridCols(2)}
+                    title="Remove item from cart"
                     className={`p-1.5 rounded ${gridCols === 2 ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
                   >
                     <Grid3X3 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setGridCols(3)}
+                    title="Remove item from cart"
                     className={`p-1.5 rounded ${gridCols === 3 ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
                   >
                     <LayoutGrid className="w-4 h-4" />
                   </button>
                 </div>
 
-                {/* Sort */}
+
                 <Select defaultValue="featured">
                   <SelectTrigger className="w-[160px]">
                     <SelectValue placeholder="Sort by" />
@@ -136,16 +138,16 @@ export default function Shop() {
               </div>
             </div>
 
-            {/* Product Grid */}
+
             <div
               className={`grid grid-cols-1 sm:grid-cols-2 ${gridCols === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-x-6 gap-y-10`}
             >
-              {products?.map((product) => (
+              {products?.map((product:any) => (
                 <ProductCard key={product.id} {...product} />
               ))}
             </div>
 
-            {/* Load More */}
+
             <div className="flex justify-center mt-12">
               <Button variant="outline" className="px-8">
                 Load More
@@ -155,7 +157,7 @@ export default function Shop() {
         </div>
       </main>
 
-      {/* Footer */}
+
       <footer className="bg-black text-white py-12 mt-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-sm text-gray-400">© 2026 ShopSmart. All rights reserved.</p>

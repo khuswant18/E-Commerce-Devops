@@ -27,7 +27,6 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
-        
 
       - name: Run Tests
         run: npm test
@@ -39,13 +38,23 @@ jobs:
     if: github.repository == 'khuswant18/E-Commerce-Devops'
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Debug SSH Connectivity
+        run: |
+          echo "Testing connection..."
+          nc -zv ${{ secrets.EC2_HOST }} 22 || echo "Port 22 not reachable"
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.EC2_SSH_KEY }} 
           port: 22
+          command_timeout: 30m
+          script_stop: true
           script: |
             cd ~/E-Commerce-Devops
             git pull origin main

@@ -69,7 +69,7 @@ export default function Collections() {
                         <Skeleton className="w-24 h-24 md:w-32 md:h-32 rounded-full" />
                         <Skeleton className="h-4 w-20" />
                       </div>
-                    </CarouselItem> 
+                    </CarouselItem>
                   ))
                 : categories?.map((item: any, idx: number) => (
                     <CarouselItem key={idx} className="pl-4 basis-1/2 md:basis-1/4 lg:basis-1/6">

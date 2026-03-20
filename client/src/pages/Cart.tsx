@@ -106,7 +106,10 @@ export default function Cart() {
     }
   };
 
-  const subtotal = cartItems.reduce((sum: number, item: CartItem) => sum + item.product.price * item.quantity, 0);
+  const subtotal = cartItems.reduce(
+    (sum: number, item: CartItem) => sum + item.product.price * item.quantity,
+    0
+  );
   const discount =
     appliedCoupon === 'SAVE10'
       ? subtotal * 0.1
@@ -178,7 +181,7 @@ export default function Cart() {
             )}
 
             <AnimatePresence>
-              {cartItems.map((item:any) => (
+              {cartItems.map((item: any) => (
                 <motion.div
                   key={item.id}
                   layout

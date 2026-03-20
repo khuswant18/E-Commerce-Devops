@@ -51,7 +51,6 @@ export default function Shop() {
     <div className="min-h-screen bg-white font-sans text-gray-900">
       <Navbar />
 
-
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-500">
@@ -64,7 +63,6 @@ export default function Shop() {
         </div>
       </div>
 
-
       <div className="bg-gray-50 py-8">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold text-center">Shop All</h1>
@@ -72,19 +70,14 @@ export default function Shop() {
         </div>
       </div>
 
-
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-
           <aside className="w-full lg:w-64 hidden lg:block shrink-0">
             <Filters />
           </aside>
 
-
           <div className="flex-1">
-
             <div className="flex items-center justify-between mb-6 pb-4 border-b">
-
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" className="lg:hidden flex items-center gap-2">
@@ -104,7 +97,6 @@ export default function Shop() {
               </p>
 
               <div className="flex items-center gap-4">
-
                 <div className="hidden md:flex items-center gap-2 border rounded-lg p-1">
                   <button
                     onClick={() => setGridCols(2)}
@@ -122,7 +114,6 @@ export default function Shop() {
                   </button>
                 </div>
 
-
                 <Select defaultValue="featured">
                   <SelectTrigger className="w-[160px]">
                     <SelectValue placeholder="Sort by" />
@@ -138,15 +129,13 @@ export default function Shop() {
               </div>
             </div>
 
-
             <div
               className={`grid grid-cols-1 sm:grid-cols-2 ${gridCols === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-x-6 gap-y-10`}
             >
-              {products?.map((product:any) => (
+              {products?.map((product: any) => (
                 <ProductCard key={product.id} {...product} />
               ))}
             </div>
-
 
             <div className="flex justify-center mt-12">
               <Button variant="outline" className="px-8">
@@ -156,7 +145,6 @@ export default function Shop() {
           </div>
         </div>
       </main>
-
 
       <footer className="bg-black text-white py-12 mt-12">
         <div className="container mx-auto px-4 text-center">

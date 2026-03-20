@@ -9,7 +9,6 @@ const login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
-    // add a comment or console.log
     const admin = await prisma.admin.findUnique({
       where: { email },
     });
@@ -17,7 +16,6 @@ const login = async (req, res) => {
     if (!admin) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-//hello
     const isPasswordValid = await bcrypt.compare(password, admin.password);
 
     if (!isPasswordValid) {

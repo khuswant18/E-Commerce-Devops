@@ -1,0 +1,65 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: invoice-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: invoice_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 10s
+      retries: 10 
+      start_period: 30s
+
+  backend:
+    build: ./backend
+    ports:
+      - '5001:5000'
+    env_file:
+      - ./backend/.env
+    environment:
+      - MYSQL_HOST=mysql
+      - GROQ_MODEL=llama-3.3-70b-versatile
+      - OPENROUTER_BASE_URL=https://openrouter.ai/api/v1/chat/completions
+      - OPENROUTER_HTTP_REFERER=http://localhost
+      - OPENROUTER_APP_TITLE=ocr-match
+    volumes:
+        - ./backend:/app
+        - paddle_models:/root/.paddleocr
+    depends_on:
+      mysql:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:5001
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+volumes:
+  mysql_data:
+  qdrant_data:
+  paddle_models:

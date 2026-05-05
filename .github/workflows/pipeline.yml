@@ -28,6 +28,10 @@ jobs:
         working-directory: server
         run: npm ci
 
+      - name: Generate Prisma client
+        working-directory: server
+        run: npx prisma generate
+
       - name: Run server tests with JUnit output
         working-directory: server
         env:

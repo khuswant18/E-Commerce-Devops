@@ -5,7 +5,7 @@ variable "region" {
 }
 
 variable "bucket_name" {
-  description = "Unique S3 bucket name for Terraform state or storage"
+  description = "ecom-devops-${random_id.bucket_id.hex}"
   type        = string
 }
 

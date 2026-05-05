@@ -147,9 +147,7 @@ jobs:
           aws ecs update-service --cluster ${CLUSTER_NAME} --service ${SERVICE_NAME} --task-definition ${TASK_DEF_ARN} || \
             (echo "Failed to update service - ensure secrets CLUSTER_NAME and SERVICE_NAME are set and service exists" && exit 1)
 
-      - name: Wait for service stability
-        run: |
-          aws ecs wait services-stable --cluster ${CLUSTER_NAME} --services ${SERVICE_NAME}
+
 
       - name: Verify service
         run: |

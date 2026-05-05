@@ -16,16 +16,12 @@ data "aws_iam_role" "lab_role" {
 }
 
 # S3 bucket 
-resource "aws_s3_bucket" "bucket" {
+data "aws_s3_bucket" "bucket" {
   bucket = var.bucket_name
-
-  tags = {
-    Name = var.bucket_name
-  }
 }
 
 resource "aws_s3_bucket_versioning" "versioning" {
-  bucket = aws_s3_bucket.bucket.id
+  bucket = data.aws_s3_bucket.bucket.id
 
   versioning_configuration {
     status = "Enabled"
@@ -34,7 +30,7 @@ resource "aws_s3_bucket_versioning" "versioning" {
 
 # Encryption
 resource "aws_s3_bucket_server_side_encryption_configuration" "sse" {
-  bucket = aws_s3_bucket.bucket.id
+  bucket = data.aws_s3_bucket.bucket.id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -44,7 +40,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "sse" {
 }
 
 resource "aws_s3_bucket_public_access_block" "block" {
-  bucket = aws_s3_bucket.bucket.id
+  bucket = data.aws_s3_bucket.bucket.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -52,16 +48,8 @@ resource "aws_s3_bucket_public_access_block" "block" {
   restrict_public_buckets = true
 }
 
-resource "aws_ecr_repository" "ecommerce" {
+data "aws_ecr_repository" "ecommerce" {
   name = "ecommerce-backend"
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-
-  tags = {
-    Name = "ecommerce-backend"
-  }
 }
 
 resource "aws_ecs_cluster" "cluster" {
@@ -70,23 +58,8 @@ resource "aws_ecs_cluster" "cluster" {
 
 
 
-resource "aws_security_group" "ecs_sg" {
-  name   = "ecs-sg"
-  vpc_id = var.vpc_id
-
-  ingress {
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+data "aws_security_group" "ecs_sg" {
+  name = "ecs-sg"
 }
 
 resource "aws_ecs_task_definition" "task" {
@@ -101,7 +74,7 @@ resource "aws_ecs_task_definition" "task" {
   container_definitions = jsonencode([
     {
       name      = "ecommerce-backend"
-      image     = "${aws_ecr_repository.ecommerce.repository_url}:latest"
+      image     = "${data.aws_ecr_repository.ecommerce.repository_url}:latest"
       essential = true
       portMappings = [
         {
@@ -123,7 +96,7 @@ resource "aws_ecs_service" "service" {
 
   network_configuration {
     subnets          = var.subnet_ids
-    security_groups  = [aws_security_group.ecs_sg.id]
+    security_groups  = [data.aws_security_group.ecs_sg.id]
     assign_public_ip = true
   }
 

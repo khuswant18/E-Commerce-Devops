@@ -50,6 +50,10 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });

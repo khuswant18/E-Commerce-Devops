@@ -1,5 +1,7 @@
 {
   "family": "ecommerce-backend",
+  "executionRoleArn": "arn:aws:iam::168713756392:role/LabRole",
+  "taskRoleArn": "arn:aws:iam::168713756392:role/LabRole",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",

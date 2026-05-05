@@ -134,7 +134,7 @@ jobs:
 
       - name: Prepare task definition
         run: |
-          sed -e "s|{{IMAGE_URI}}|${IMAGE_URI}|g" -e "s|{{AWS_REGION}}|${AWS_REGION}|g" server/ecs-task-def.json > taskdef.json
+          sed -e "s|{{IMAGE_URI}}|${IMAGE_URI}|g" -e "s|{{AWS_REGION}}|${AWS_REGION}|g" -e "s|{{ACCOUNT_ID}}|${ACCOUNT_ID}|g" server/ecs-task-def.json > taskdef.json
 
       - name: Register task definition
         id: register

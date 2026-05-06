@@ -16,12 +16,12 @@ data "aws_iam_role" "lab_role" {
 }
 
 # S3 bucket 
-data "aws_s3_bucket" "bucket" {
+resource "aws_s3_bucket" "bucket" {
   bucket = var.bucket_name
 }
 
 resource "aws_s3_bucket_versioning" "versioning" {
-  bucket = data.aws_s3_bucket.bucket.id
+  bucket = aws_s3_bucket.bucket.id
 
   versioning_configuration {
     status = "Enabled"
@@ -30,7 +30,7 @@ resource "aws_s3_bucket_versioning" "versioning" {
 
 # Encryption
 resource "aws_s3_bucket_server_side_encryption_configuration" "sse" {
-  bucket = data.aws_s3_bucket.bucket.id
+  bucket = aws_s3_bucket.bucket.id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -40,7 +40,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "sse" {
 }
 
 resource "aws_s3_bucket_public_access_block" "block" {
-  bucket = data.aws_s3_bucket.bucket.id
+  bucket = aws_s3_bucket.bucket.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -85,4 +85,18 @@ resource "aws_ecs_task_definition" "task" {
     }
   ])
 
+}
+
+resource "aws_ecs_service" "service" {
+  name            = "ecommerce-service"
+  cluster         = data.aws_ecs_cluster.cluster.id
+  task_definition = aws_ecs_task_definition.task.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = var.subnet_ids
+    security_groups  = [data.aws_security_group.ecs_sg.id]
+    assign_public_ip = true
+  }
 }

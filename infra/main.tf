@@ -101,6 +101,7 @@ resource "aws_ecs_service" "service" {
   }
 }
 
+
 # Frontend 
 
 data "aws_ecr_repository" "ecommerce_frontend" {

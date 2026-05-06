@@ -100,3 +100,65 @@ resource "aws_ecs_service" "service" {
     assign_public_ip = true
   }
 }
+
+# Frontend 
+
+data "aws_ecr_repository" "ecommerce_frontend" {
+  name = "ecommerce-frontend"
+}
+
+# Allow port 80 inbound for the frontend
+resource "aws_security_group_rule" "frontend_http" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = data.aws_security_group.ecs_sg.id
+}
+
+resource "aws_ecs_task_definition" "frontend_task" {
+  family                   = "ecommerce-frontend-task"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = "256"
+  memory                   = "512"
+  execution_role_arn       = data.aws_iam_role.lab_role.arn
+  task_role_arn            = data.aws_iam_role.lab_role.arn
+
+  container_definitions = jsonencode([
+    {
+      name      = "ecommerce-frontend"
+      image     = "${data.aws_ecr_repository.ecommerce_frontend.repository_url}:latest"
+      essential = true
+      portMappings = [
+        {
+          containerPort = 80
+          hostPort      = 80
+        }
+      ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = "/ecs/ecommerce-frontend"
+          "awslogs-region"        = var.region
+          "awslogs-stream-prefix" = "ecs"
+        }
+      }
+    }
+  ])
+}
+
+resource "aws_ecs_service" "frontend_service" {
+  name            = "ecommerce-frontend-service"
+  cluster         = data.aws_ecs_cluster.cluster.id
+  task_definition = aws_ecs_task_definition.frontend_task.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = var.subnet_ids
+    security_groups  = [data.aws_security_group.ecs_sg.id]
+    assign_public_ip = true
+  }
+}
